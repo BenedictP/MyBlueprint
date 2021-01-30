@@ -1,0 +1,6 @@
+include ':localData'
+include ':remoteData'
+include ':repository'
+include ':domain'
+include ':app'
+rootProject.name = "MyBlueprint"

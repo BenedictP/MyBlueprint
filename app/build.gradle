@@ -1,0 +1,168 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
+    id "com.starter.easylauncher" version "3.9.0"
+}
+
+apply from: '../dependencies.gradle'
+
+android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildToolsVersion
+
+    defaultConfig {
+        applicationId "io.benedictp.myblueprint"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdkVersion
+        versionCode versions.versionCode
+        versionName versions.versionName
+
+        vectorDrawables.useSupportLibrary = true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        resValue 'string', 'app_name', 'MyBlueprint'
+    }
+    signingConfigs {
+        release {
+            Properties properties = new Properties()
+            File keyStoreProperties = project.rootProject.file('keystore.properties')
+            if (keyStoreProperties.exists()) {
+                properties.load(keyStoreProperties.newDataInputStream())
+            }
+            String storePasswordString = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD") as String ?: properties['storePassword']
+            String keyAliasString = System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS") as String ?: properties['keyAlias']
+            String keyPasswordString = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD") as String ?: properties['keyPassword']
+            storeFile file("../keystore.jks")
+            print "store password " + storePasswordString
+            print " key password " + keyPasswordString
+            print " key alias: " + keyAliasString
+            storePassword storePasswordString
+            keyAlias keyAliasString
+            keyPassword keyPasswordString
+        }
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-DEBUG'
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    flavorDimensions "version"
+    productFlavors {
+        develop {
+            applicationId = "io.benedictp.myblueprint.develop"
+        }
+        staging {
+            applicationId = "io.benedictp.myblueprint.staging"
+        }
+        production {
+            applicationId = "io.benedictp.myblueprint"
+        }
+    }
+    applicationVariants.all { variant ->
+        def appName = variant.mergedFlavor.resValues.get('app_name').getValue()
+        def productFlavor = variant.productFlavors.get(0).name
+        def buildType = variant.buildType.name
+        //change appName for better distinction but not the final build for the store
+        if (productFlavor == "production" && buildType == "release") {
+            variant.resValue "string", "generated_app_name", '"' + appName + '"'
+        } else {
+            variant.resValue "string", "generated_app_name", '"' + appName + ' ' + variant.productFlavors.get(0).name + ' ' + variant.buildType.name + '"'
+        }
+
+        variant.outputs.all { output ->
+            def versionCode = variant.versionCode
+            //change apk file name
+            outputFileName = appName + '_' + productFlavor + '_' + buildType + '_' + versionCode + '.apk'
+        }
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled true  //to use some java 8+ features
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+        //to use kotlin Result return type
+        //e.g. parse(input).map(::validate).map(::send).onFailure(::error)
+        freeCompilerArgs = ["-Xallow-result-return-type"]
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+easylauncher {
+    defaultFlavorNaming true
+    variants {
+        stagingRelease {
+            enable true
+            filters customRibbon(label: "staging", ribbonColor: "#FF0000", labelColor: "#000000", position: "bottom")
+        }
+        developRelease {
+            enable true
+            filters customRibbon(label: "develop", ribbonColor: "#FF0000", labelColor: "#000000", position: "bottom")
+        }
+    }
+}
+
+kapt {
+    correctErrorTypes true
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':repository')
+    implementation project(':localData')
+    implementation project(':remoteData')
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
+
+    implementation "com.google.android.material:material:$versions.material"
+
+    implementation "androidx.core:core-ktx:$versions.androidXCore"
+    implementation "androidx.fragment:fragment-ktx:$versions.androidXFragment"
+    implementation "androidx.appcompat:appcompat:$versions.androidXAppCompat"
+    implementation "androidx.constraintlayout:constraintlayout:$versions.androidXConstraintLayout"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.androidXLifeCycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidXLifeCycle"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$versions.androidXLifeCycle"
+    implementation "androidx.navigation:navigation-runtime-ktx:$versions.androidXNavigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:$versions.androidXNavigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$versions.androidXNavigation"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.androidXSwipeRefreshLayout"
+
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit2"
+    implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit2"
+    implementation "com.squareup.moshi:moshi:$versions.moshi"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$versions.moshi"
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttp3"
+
+    implementation "com.google.dagger:hilt-android:$versions.daggerHiltAndroid"
+    kapt "com.google.dagger:hilt-android-compiler:$versions.daggerHiltAndroid"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$versions.androidXHilt"
+    kapt "androidx.hilt:hilt-compiler:$versions.androidXHilt"
+
+    implementation "com.squareup.sqldelight:android-driver:$versions.sqldelightVersion"
+
+    implementation "com.github.bumptech.glide:glide:$versions.glide"
+    kapt "com.github.bumptech.glide:compiler:$versions.glide"
+
+    //to use some java 8+ features
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.desugarJdkLibs"
+
+    testImplementation "junit:junit:$versions.junit"
+
+    androidTestImplementation "androidx.test.ext:junit:$versions.androidXJunit"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.androidXEspresso"
+}

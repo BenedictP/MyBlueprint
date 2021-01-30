@@ -1,0 +1,17 @@
+<resources>
+
+	<!--	Bottom Navigation Menu -->
+	<string name="bottom_navigation_launches">Launches</string>
+	<string name="bottom_navigation_rockets">Rockets</string>
+
+	<!--	Onboarding -->
+	<string name="onboarding_text">Awesome Onboarding! Much Info! So good!</string>
+	<string name="onboarding_finish">Finish</string>
+
+	<string name="launches">Launches</string>
+	<string name="rockets">Rockets</string>
+
+	<string name="list_empty">Keine Daten gefunden</string>
+	<string name="list_error_text">Fehler beim Laden der Daten</string>
+	<string name="list_error_retry">Nochmal versuchen</string>
+</resources>

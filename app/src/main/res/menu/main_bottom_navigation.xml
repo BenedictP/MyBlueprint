@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<!--	Attention: Ids must be the same as the files and the ids there in the navigation folder-->
+	<item
+		android:id="@+id/launches"
+		android:enabled="true"
+		android:icon="@drawable/ic_baseline_call_made_24"
+		android:title="@string/bottom_navigation_launches" />
+	<item
+		android:id="@+id/rockets"
+		android:enabled="true"
+		android:icon="@drawable/ic_baseline_refresh_24"
+		android:title="@string/bottom_navigation_rockets" />
+</menu>

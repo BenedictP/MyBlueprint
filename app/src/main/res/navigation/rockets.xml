@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/rockets"
+	app:startDestination="@id/rocketsFragment">
+	<!--	Attention: Ids must be the same as the files and the ids there in the navigation folder-->
+
+	<fragment
+		android:id="@+id/rocketsFragment"
+		android:name="io.benedictp.myblueprint.presentation.rockets.RocketsFragment"
+		android:label="RocketsFragment"
+		tools:layout="@layout/fragment_rockets" />
+</navigation>
