@@ -11,16 +11,14 @@ import io.benedictp.myblueprint.databinding.ItemLaunchBinding
 
 class LaunchesAdapter(private val launchClickConsumer: Consumer<Launch>) : RecyclerView.Adapter<LaunchViewHolder>() {
 
-	private val differCallback by lazy {
-		object : DiffUtil.ItemCallback<Launch>() {
-			override fun areItemsTheSame(oldItem: Launch, newItem: Launch): Boolean {
-				return oldItem.id == newItem.id
-			}
+	private val differCallback = object : DiffUtil.ItemCallback<Launch>() {
+		override fun areItemsTheSame(oldItem: Launch, newItem: Launch): Boolean {
+			return oldItem.id == newItem.id
+		}
 
-			override fun areContentsTheSame(oldItem: Launch, newItem: Launch): Boolean {
-				return oldItem == newItem
+		override fun areContentsTheSame(oldItem: Launch, newItem: Launch): Boolean {
+			return oldItem == newItem
 
-			}
 		}
 	}
 

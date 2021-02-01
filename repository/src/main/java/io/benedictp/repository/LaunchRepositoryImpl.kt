@@ -9,7 +9,7 @@ class LaunchRepositoryImpl @Inject constructor(
 	private val launchRemoteDataSource: LaunchRemoteDataSource
 ) : LaunchRepository {
 
-	override suspend fun getUpcomingLaunches(): Result<List<Launch>> {
+	override suspend fun getUpcomingLaunches(): Result<ArrayList<Launch>> {
 		return launchRemoteDataSource.getUpcomingLaunches()
 	}
 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.benedictp.domain.model.Launch
 import io.benedictp.myblueprint.R
@@ -56,9 +57,12 @@ class LaunchesFragment : Fragment(R.layout.fragment_launches) {
 		viewModel.upcomingLaunchesLiveData.observe(viewLifecycleOwner) { upcomingLaunchViewState ->
 			when (upcomingLaunchViewState) {
 				ViewState.Init -> loadUpcomingLaunches()
-				ViewState.Loading -> showLaunchLoading()
-				is ViewState.Data -> showLaunchData(upcomingLaunchViewState.value)
-				is ViewState.Error -> showLaunchError(upcomingLaunchViewState.error.message ?: "Error")
+				is ViewState.Loading -> showLaunchLoading(upcomingLaunchViewState.data)
+				is ViewState.Data -> showLaunchData(upcomingLaunchViewState.data)
+				is ViewState.Error -> showLaunchError(
+					upcomingLaunchViewState.error.message ?: "Error",
+					upcomingLaunchViewState.data
+				)
 			}
 		}
 	}
@@ -67,7 +71,10 @@ class LaunchesFragment : Fragment(R.layout.fragment_launches) {
 		viewModel.loadUpcomingLaunches()
 	}
 
-	private fun showLaunchLoading() {
+	private fun showLaunchLoading(launches: ArrayList<Launch>?) {
+		if (launches != null && launches.isNotEmpty()) {
+			launchesAdapter.setData(launches)
+		}
 		uiBinding.emptyView.listEmptyContainer.visibility = View.GONE
 		uiBinding.errorView.listErrorContainer.visibility = View.GONE
 		uiBinding.swipeRefresh.visibility = View.VISIBLE
@@ -97,12 +104,22 @@ class LaunchesFragment : Fragment(R.layout.fragment_launches) {
 		uiBinding.swipeRefresh.isRefreshing = false
 	}
 
-	private fun showLaunchError(errorText: String) {
+	private fun showLaunchError(errorText: String, launches: ArrayList<Launch>?) {
+		if (launches != null && launches.isNotEmpty()) {
+			launchesAdapter.setData(launches)
+			uiBinding.errorView.listErrorContainer.visibility = View.GONE
+			uiBinding.swipeRefresh.visibility = View.VISIBLE
+			uiBinding.launches.visibility = View.VISIBLE
+			Snackbar.make(uiBinding.launches, errorText, Snackbar.LENGTH_LONG)
+				.setAction("Retry") { loadUpcomingLaunches() }
+				.show()
+		} else {
+			uiBinding.errorView.listErrorText.text = errorText
+			uiBinding.errorView.listErrorContainer.visibility = View.VISIBLE
+			uiBinding.swipeRefresh.visibility = View.GONE
+			uiBinding.launches.visibility = View.GONE
+		}
 		uiBinding.emptyView.listEmptyContainer.visibility = View.GONE
-		uiBinding.errorView.listErrorText.text = errorText
-		uiBinding.errorView.listErrorContainer.visibility = View.VISIBLE
-		uiBinding.swipeRefresh.visibility = View.GONE
-		uiBinding.launches.visibility = View.GONE
 		uiBinding.swipeRefresh.isRefreshing = false
 	}
 

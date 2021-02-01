@@ -4,6 +4,6 @@ import io.benedictp.domain.model.Launch
 
 interface LaunchRepository {
 
-	suspend fun getUpcomingLaunches(): Result<List<Launch>>
+	suspend fun getUpcomingLaunches(): Result<ArrayList<Launch>>
 
 }

@@ -12,10 +12,10 @@ class LaunchRemoteDataSourceImpl @Inject constructor(
 	private val LaunchDtoMapper: LaunchDtoMapper
 ) : LaunchRemoteDataSource {
 
-	override suspend fun getUpcomingLaunches(): Result<List<Launch>> = withContext(Dispatchers.IO) {
+	override suspend fun getUpcomingLaunches(): Result<ArrayList<Launch>> = withContext(Dispatchers.IO) {
 		return@withContext try {
-			val upcomingLaunches = spaceXApiService.getUpcomingLaunches()
-				.map { LaunchDtoMapper.mapFromDto(it) }
+			val upcomingLaunches = ArrayList(spaceXApiService.getUpcomingLaunches()
+				.map { LaunchDtoMapper.mapFromDto(it) })
 			Result.success(upcomingLaunches)
 		} catch (e: Exception) {
 			Result.failure(e)
