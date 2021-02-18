@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.benedictp.domain.model.Launch
 import io.benedictp.domain.usecase.GetUpcomingLaunchesUseCase
-import io.benedictp.myblueprint.presentation.util.ViewState
+import io.benedictp.myblueprint.presentation.util.RefreshableViewState
 import io.benedictp.myblueprint.presentation.util.getData
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,17 +20,17 @@ class LaunchesViewModel @Inject constructor(
 ) : ViewModel() {
 
 	val upcomingLaunchesLiveData =
-		savedStateHandle.getLiveData<ViewState<ArrayList<Launch>, Throwable>>(LAUNCHES_KEY, ViewState.Init)
+		savedStateHandle.getLiveData<RefreshableViewState<ArrayList<Launch>, Throwable>>(LAUNCHES_KEY, RefreshableViewState.Init)
 
 	fun loadUpcomingLaunches() {
 		viewModelScope.launch {
-			upcomingLaunchesLiveData.value = ViewState.Loading(upcomingLaunchesLiveData.value?.getData())
+			upcomingLaunchesLiveData.value = RefreshableViewState.Loading(upcomingLaunchesLiveData.value?.getData())
 			getUpcomingLaunchesUseCase()
 				.onSuccess {
-					upcomingLaunchesLiveData.value = ViewState.Data(it)
+					upcomingLaunchesLiveData.value = RefreshableViewState.Data(it)
 				}
 				.onFailure {
-					upcomingLaunchesLiveData.value = ViewState.Error(it, upcomingLaunchesLiveData.value?.getData())
+					upcomingLaunchesLiveData.value = RefreshableViewState.Error(it, upcomingLaunchesLiveData.value?.getData())
 				}
 		}
 	}

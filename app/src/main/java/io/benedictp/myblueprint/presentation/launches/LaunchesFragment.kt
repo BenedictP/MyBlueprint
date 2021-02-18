@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.benedictp.domain.model.Launch
 import io.benedictp.myblueprint.R
 import io.benedictp.myblueprint.databinding.FragmentLaunchesBinding
-import io.benedictp.myblueprint.presentation.util.ViewState
+import io.benedictp.myblueprint.presentation.util.RefreshableViewState
 import io.benedictp.myblueprint.presentation.util.viewBinding
 
 const val TAG = "LaunchesFragment"
@@ -56,10 +56,10 @@ class LaunchesFragment : Fragment(R.layout.fragment_launches) {
 	private fun initObservers() {
 		viewModel.upcomingLaunchesLiveData.observe(viewLifecycleOwner) { upcomingLaunchViewState ->
 			when (upcomingLaunchViewState) {
-				ViewState.Init -> loadUpcomingLaunches()
-				is ViewState.Loading -> showLaunchLoading(upcomingLaunchViewState.data)
-				is ViewState.Data -> showLaunchData(upcomingLaunchViewState.data)
-				is ViewState.Error -> showLaunchError(
+				RefreshableViewState.Init -> loadUpcomingLaunches()
+				is RefreshableViewState.Loading -> showLaunchLoading(upcomingLaunchViewState.data)
+				is RefreshableViewState.Data -> showLaunchData(upcomingLaunchViewState.data)
+				is RefreshableViewState.Error -> showLaunchError(
 					upcomingLaunchViewState.error.message ?: "Error",
 					upcomingLaunchViewState.data
 				)
