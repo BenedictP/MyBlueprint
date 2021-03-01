@@ -29,14 +29,14 @@ ext.versions = [
         moshi                     : '1.11.0',
         okhttp3                   : '5.0.0-alpha.2',
 
-        daggerHiltAndroid         : '2.32-alpha',
+        daggerHiltAndroid         : '2.33-beta',
         androidXHilt              : '1.0.0-alpha03',
         javaxAnnotiationVersion   : '1.0',
         javaxInjectVersion        : '1',
 
         sqldelightVersion         : '1.4.4',
 
-        desugarJdkLibs            : '1.1.1',
+        desugarJdkLibs            : '1.1.5',
 
         glide                     : '4.12.0',
 
