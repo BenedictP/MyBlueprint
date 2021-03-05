@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.benedictp.domain.model.Launch
@@ -24,23 +23,10 @@ class LaunchesFragment : Fragment(R.layout.fragment_launches) {
 	private val viewModel: LaunchesViewModel by viewModels()
 	private val uiBinding by viewBinding(FragmentLaunchesBinding::bind)
 
-	private lateinit var launchesAdapter: LaunchesAdapter
-
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-
-		launchesAdapter = LaunchesAdapter {
-			Toast.makeText(requireContext(), "Clicked $it", Toast.LENGTH_LONG).show()
-		}
-
 		initUi()
 		initObservers()
-	}
-
-	override fun onDestroyView() {
-		//see https://charlesmuchene.hashnode.dev/a-subtle-memory-leak-fragment-recyclerview-and-its-adapter-ck805s7jd03frzns17uapi3vh
-		view?.findViewById<RecyclerView>(R.id.launches)?.adapter = null
-		super.onDestroyView()
 	}
 
 	private fun initUi() {
@@ -49,7 +35,9 @@ class LaunchesFragment : Fragment(R.layout.fragment_launches) {
 		uiBinding.launches.apply {
 			layoutManager = LinearLayoutManager(requireContext())
 			itemAnimator = DefaultItemAnimator()
-			adapter = launchesAdapter
+			adapter = LaunchesAdapter {
+				Toast.makeText(requireContext(), "Clicked $it", Toast.LENGTH_LONG).show()
+			}
 		}
 	}
 
@@ -73,7 +61,7 @@ class LaunchesFragment : Fragment(R.layout.fragment_launches) {
 
 	private fun showLaunchLoading(launches: ArrayList<Launch>?) {
 		if (launches != null && launches.isNotEmpty()) {
-			launchesAdapter.setData(launches)
+			(uiBinding.launches.adapter as LaunchesAdapter).setData(launches)
 		}
 		uiBinding.emptyView.listEmptyContainer.visibility = View.GONE
 		uiBinding.errorView.listErrorContainer.visibility = View.GONE
@@ -92,7 +80,7 @@ class LaunchesFragment : Fragment(R.layout.fragment_launches) {
 		uiBinding.swipeRefresh.visibility = View.VISIBLE
 		uiBinding.launches.visibility = View.VISIBLE
 		uiBinding.swipeRefresh.isRefreshing = false
-		launchesAdapter.setData(launches)
+		(uiBinding.launches.adapter as LaunchesAdapter).setData(launches)
 	}
 
 	private fun showLaunchesEmpty() {
@@ -106,7 +94,7 @@ class LaunchesFragment : Fragment(R.layout.fragment_launches) {
 
 	private fun showLaunchError(errorText: String, launches: ArrayList<Launch>?) {
 		if (launches != null && launches.isNotEmpty()) {
-			launchesAdapter.setData(launches)
+			(uiBinding.launches.adapter as LaunchesAdapter).setData(launches)
 			uiBinding.errorView.listErrorContainer.visibility = View.GONE
 			uiBinding.swipeRefresh.visibility = View.VISIBLE
 			uiBinding.launches.visibility = View.VISIBLE
