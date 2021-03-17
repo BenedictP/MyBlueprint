@@ -21,13 +21,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.composethemeadapter.MdcTheme
 import com.puculek.pulltorefresh.PullToRefresh
 import dagger.hilt.android.AndroidEntryPoint
 import io.benedictp.domain.model.Launch
 import io.benedictp.myblueprint.R
 import io.benedictp.myblueprint.presentation.composable.MyBlueprintTopAppBar
 import io.benedictp.myblueprint.presentation.composable.ThemedPreview
-import io.benedictp.myblueprint.presentation.theme.JetnewsTheme
 import io.benedictp.myblueprint.presentation.util.RefreshableViewState
 import kotlinx.coroutines.launch
 
@@ -39,7 +39,7 @@ class LaunchesFragment : Fragment() {
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		return ComposeView(requireContext()).apply {
 			setContent {
-				JetnewsTheme {
+				MdcTheme {
 					val launchesViewState: State<RefreshableViewState<ArrayList<Launch>, Throwable>> =
 						viewModel.upcomingLaunchesLiveData.observeAsState(RefreshableViewState.Init)
 
@@ -198,7 +198,7 @@ class LaunchesFragment : Fragment() {
 	@Preview
 	@Composable
 	fun PreviewInitialEmpty() {
-		ThemedPreview {
+		ThemedPreview() {
 			LaunchesScreen(
 				launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
 					override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
@@ -215,7 +215,7 @@ class LaunchesFragment : Fragment() {
 	@Preview
 	@Composable
 	fun PreviewInitialEmptyDarkMode() {
-		ThemedPreview(darkTheme = true) {
+		ThemedPreview() {
 			LaunchesScreen(
 				launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
 					override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
@@ -232,7 +232,7 @@ class LaunchesFragment : Fragment() {
 	@Preview
 	@Composable
 	fun PreviewLoadingEmpty() {
-		ThemedPreview {
+		ThemedPreview() {
 			LaunchesScreen(
 				launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
 					override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
@@ -249,7 +249,7 @@ class LaunchesFragment : Fragment() {
 	@Preview
 	@Composable
 	fun PreviewLoadingEmptyDarkMode() {
-		ThemedPreview(darkTheme = true) {
+		ThemedPreview() {
 			LaunchesScreen(
 				launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
 					override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
@@ -266,7 +266,7 @@ class LaunchesFragment : Fragment() {
 	@Preview
 	@Composable
 	fun PreviewData() {
-		ThemedPreview {
+		ThemedPreview() {
 			LaunchesScreen(
 				launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
 					override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
@@ -289,7 +289,7 @@ class LaunchesFragment : Fragment() {
 	@Preview
 	@Composable
 	fun PreviewDataDarkMode() {
-		ThemedPreview(darkTheme = true) {
+		ThemedPreview() {
 			LaunchesScreen(
 				launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
 					override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
@@ -312,7 +312,7 @@ class LaunchesFragment : Fragment() {
 	@Preview
 	@Composable
 	fun PreviewError() {
-		ThemedPreview {
+		ThemedPreview() {
 			LaunchesScreen(
 				launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
 					override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
@@ -329,7 +329,7 @@ class LaunchesFragment : Fragment() {
 	@Preview
 	@Composable
 	fun PreviewErrorDarkMode() {
-		ThemedPreview(darkTheme = true) {
+		ThemedPreview() {
 			LaunchesScreen(
 				launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
 					override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
@@ -346,7 +346,7 @@ class LaunchesFragment : Fragment() {
 	@Preview
 	@Composable
 	fun PreviewLoadingWithData() {
-		ThemedPreview {
+		ThemedPreview() {
 			LaunchesScreen(
 				launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
 					override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
@@ -369,7 +369,7 @@ class LaunchesFragment : Fragment() {
 	@Preview
 	@Composable
 	fun PreviewLoadingWithDataDarkMode() {
-		ThemedPreview(darkTheme = true) {
+		ThemedPreview() {
 			LaunchesScreen(
 				launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
 					override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
@@ -392,7 +392,7 @@ class LaunchesFragment : Fragment() {
 	@Preview
 	@Composable
 	fun PreviewErrorWithData() {
-		ThemedPreview {
+		ThemedPreview() {
 			LaunchesScreen(
 				launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
 					override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
@@ -416,7 +416,7 @@ class LaunchesFragment : Fragment() {
 	@Preview
 	@Composable
 	fun PreviewErrorWithDataDarkMode() {
-		ThemedPreview(darkTheme = true) {
+		ThemedPreview() {
 			LaunchesScreen(
 				launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
 					override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
