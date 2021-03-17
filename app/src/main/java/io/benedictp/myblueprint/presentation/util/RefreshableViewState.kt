@@ -4,9 +4,9 @@ import java.io.Serializable
 
 sealed class RefreshableViewState<out Data : Serializable, out Error : Serializable> : Serializable {
 	object Init : RefreshableViewState<Nothing, Nothing>(), Serializable
-	class Loading<out Data : Serializable>(val data: Data?) : RefreshableViewState<Data, Nothing>(), Serializable
+	class Loading<out Data : Serializable>(val data: Data? = null) : RefreshableViewState<Data, Nothing>(), Serializable
 	class Data<out Data : Serializable>(val data: Data) : RefreshableViewState<Data, Nothing>(), Serializable
-	class Error<out Error : Serializable, out Data : Serializable>(val error: Error, val data: Data?) :
+	class Error<out Error : Serializable, out Data : Serializable>(val error: Error, val data: Data? = null) :
 		RefreshableViewState<Data, Error>(),
 		Serializable
 }

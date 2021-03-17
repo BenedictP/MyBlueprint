@@ -1,5 +1,7 @@
 <resources>
 
+	<string name="navigate_up">Navigate up</string>
+
 	<!--	Bottom Navigation Menu -->
 	<string name="bottom_navigation_launches">Launches</string>
 	<string name="bottom_navigation_rockets">Rockets</string>

@@ -19,7 +19,7 @@ ext.versions = [
 
         androidXCore              : '1.3.2',
         androidXFragment          : '1.3.0',
-        androidXAppCompat         : '1.2.0',
+        androidXAppCompat         : '1.3.0-beta01',
         androidXConstraintLayout  : '2.0.4',
         androidXLifeCycle         : '2.3.0',
         androidXNavigation        : '2.3.3',

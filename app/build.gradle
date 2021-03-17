@@ -93,11 +93,18 @@ android {
         //to use kotlin Result return type
         //e.g. parse(input).map(::validate).map(::send).onFailure(::error)
         freeCompilerArgs = ["-Xallow-result-return-type"]
+        freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
+        useIR = true
     }
     buildFeatures {
-        viewBinding = true
+        compose true
         buildConfig = true
     }
+    composeOptions {
+        kotlinCompilerVersion '1.4.31'
+        kotlinCompilerExtensionVersion '1.0.0-beta02'
+    }
+
 }
 
 easylauncher {
@@ -126,6 +133,16 @@ dependencies {
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
+
+    implementation 'androidx.compose.ui:ui:1.0.0-beta02'
+    implementation 'androidx.compose.ui:ui-tooling:1.0.0-beta02'
+    implementation 'androidx.compose.foundation:foundation:1.0.0-beta02'
+    implementation 'androidx.compose.material:material:1.0.0-beta02'
+    implementation 'androidx.compose.material:material-icons-core:1.0.0-beta02'
+    implementation 'androidx.compose.material:material-icons-extended:1.0.0-beta02'
+    implementation 'androidx.compose.runtime:runtime-livedata:1.0.0-beta02'
+
+    implementation 'com.puculek.pulltorefresh:pull-to-refresh-compose:1.0.0'
 
     implementation "com.google.android.material:material:$versions.material"
 
