@@ -90,9 +90,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        //to use kotlin Result return type
-        //e.g. parse(input).map(::validate).map(::send).onFailure(::error)
-        freeCompilerArgs = ["-Xallow-result-return-type"]
     }
     buildFeatures {
         viewBinding = true
@@ -157,6 +154,9 @@ dependencies {
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.desugarJdkLibs"
 
     testImplementation "junit:junit:$versions.junit"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutines"
+    testImplementation "io.mockk:mockk:$versions.mockk"
+    testImplementation "androidx.arch.core:core-testing:$versions.coreTesting"
 
     androidTestImplementation "androidx.test.ext:junit:$versions.androidXJunit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.androidXEspresso"

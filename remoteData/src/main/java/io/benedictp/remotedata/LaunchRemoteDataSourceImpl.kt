@@ -1,6 +1,9 @@
 package io.benedictp.remotedata
 
 import io.benedictp.domain.model.Launch
+import io.benedictp.domain.util.Failure
+import io.benedictp.domain.util.Result
+import io.benedictp.domain.util.Success
 import io.benedictp.remotedata.model.LaunchDtoMapper
 import io.benedictp.repository.remote.LaunchRemoteDataSource
 import kotlinx.coroutines.withContext
@@ -17,9 +20,9 @@ class LaunchRemoteDataSourceImpl @Inject constructor(
 		return@withContext try {
 			val upcomingLaunches = ArrayList(spaceXApiService.getUpcomingLaunches()
 				.map { LaunchDtoMapper.mapFromDto(it) })
-			Result.success(upcomingLaunches)
+			Success(upcomingLaunches)
 		} catch (e: Exception) {
-			Result.failure(e)
+			Failure(e)
 		}
 	}
 }
