@@ -3,6 +3,7 @@ package io.benedictp.domain.usecase
 import io.benedictp.domain.model.Launch
 import io.benedictp.domain.repository.LaunchRepository
 import io.benedictp.domain.util.ControlledRunner
+import io.benedictp.domain.util.Result
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named

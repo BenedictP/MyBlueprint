@@ -23,9 +23,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        //to use kotlin Result return type
-        //e.g. parse(input).map(::validate).map(::send).onFailure(::error)
-        freeCompilerArgs = ["-Xallow-result-return-type"]
     }
 }
 
