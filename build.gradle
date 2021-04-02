@@ -9,7 +9,6 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$versions.daggerHiltAndroid"
         classpath "com.squareup.sqldelight:gradle-plugin:$versions.sqldelightVersion"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$versions.saveArgsPlugin"
     }
 }
 

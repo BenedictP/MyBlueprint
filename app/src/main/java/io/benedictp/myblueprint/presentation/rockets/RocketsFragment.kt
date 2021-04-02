@@ -1,11 +1,9 @@
 package io.benedictp.myblueprint.presentation.rockets
 
-import androidx.fragment.app.Fragment
-import dagger.hilt.android.AndroidEntryPoint
-import io.benedictp.myblueprint.R
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 
-const val TAG = "RocketsFragment"
-
-@AndroidEntryPoint
-class RocketsFragment : Fragment(R.layout.fragment_rockets) {
+@Composable
+fun Rockets() {
+	Text("Rockets")
 }

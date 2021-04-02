@@ -20,6 +20,8 @@ class LaunchesViewModel @Inject constructor(
 	private val getUpcomingLaunchesUseCase: GetUpcomingLaunchesUseCase
 ) : ViewModel() {
 
+	private var counter = 0
+
 	private val _upcomingLaunchesLiveData =
 		savedStateHandle.getLiveData<RefreshableViewState<ArrayList<Launch>, Throwable>>(LAUNCHES_KEY, RefreshableViewState.Init)
 	val upcomingLaunchesLiveData: LiveData<RefreshableViewState<ArrayList<Launch>, Throwable>> = _upcomingLaunchesLiveData

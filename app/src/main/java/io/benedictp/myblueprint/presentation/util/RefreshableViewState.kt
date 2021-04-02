@@ -3,6 +3,7 @@ package io.benedictp.myblueprint.presentation.util
 import java.io.Serializable
 
 sealed class RefreshableViewState<out Data : Serializable, out Error : Serializable> : Serializable {
+	object None : RefreshableViewState<Nothing, Nothing>(), Serializable
 	object Init : RefreshableViewState<Nothing, Nothing>(), Serializable
 	class Loading<out Data : Serializable>(val data: Data? = null) : RefreshableViewState<Data, Nothing>(), Serializable
 	class Data<out Data : Serializable>(val data: Data) : RefreshableViewState<Data, Nothing>(), Serializable
@@ -13,6 +14,7 @@ sealed class RefreshableViewState<out Data : Serializable, out Error : Serializa
 
 fun <Data : Serializable, Error : Serializable> RefreshableViewState<Data, Error>.getData(): Data? {
 	return when (this) {
+		RefreshableViewState.None -> null
 		RefreshableViewState.Init -> null
 		is RefreshableViewState.Loading -> this.data
 		is RefreshableViewState.Data -> this.data

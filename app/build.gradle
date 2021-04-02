@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'androidx.navigation.safeargs.kotlin'
     id "com.starter.easylauncher" version "3.9.0"
     id 'kotlin-parcelize'
 }
@@ -137,6 +136,8 @@ dependencies {
     implementation 'androidx.compose.material:material-icons-core:1.0.0-beta03'
     implementation 'androidx.compose.material:material-icons-extended:1.0.0-beta03'
     implementation 'androidx.compose.runtime:runtime-livedata:1.0.0-beta03'
+    implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0-alpha01"
 
     implementation 'com.puculek.pulltorefresh:pull-to-refresh-compose:1.0.5'
     implementation "com.google.android.material:compose-theme-adapter:1.0.0-beta03"
@@ -148,10 +149,8 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$versions.androidXAppCompat"
     implementation "androidx.constraintlayout:constraintlayout:$versions.androidXConstraintLayout"
     implementation "androidx.lifecycle:lifecycle-common-java8:$versions.androidXLifeCycle"
-    implementation "androidx.navigation:navigation-runtime-ktx:$versions.androidXNavigation"
-    implementation "androidx.navigation:navigation-fragment-ktx:$versions.androidXNavigation"
-    implementation "androidx.navigation:navigation-ui-ktx:$versions.androidXNavigation"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.androidXSwipeRefreshLayout"
+    implementation 'androidx.navigation:navigation-runtime-ktx:2.3.4'
 
     implementation "com.squareup.retrofit2:retrofit:$versions.retrofit2"
     implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit2"
