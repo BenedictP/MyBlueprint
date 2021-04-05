@@ -5,6 +5,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id "com.starter.easylauncher" version "3.9.0"
     id 'kotlin-parcelize'
+    id 'shot'
 }
 
 apply from: '../dependencies.gradle'
@@ -22,7 +23,7 @@ android {
 
         vectorDrawables.useSupportLibrary = true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.karumi.shot.ShotTestRunner"
 
         resValue 'string', 'app_name', 'MyBlueprint'
     }
@@ -84,11 +85,11 @@ android {
     }
     compileOptions {
         coreLibraryDesugaringEnabled true  //to use some java 8+ features
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_11.toString()
         freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
         useIR = true
     }
@@ -99,7 +100,19 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion '1.0.0-beta03'
     }
-
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+        exclude("META-INF/*.kotlin_module")
+    }
 }
 
 easylauncher {
@@ -129,18 +142,20 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
 
-    implementation 'androidx.compose.ui:ui:1.0.0-beta03'
-    implementation 'androidx.compose.ui:ui-tooling:1.0.0-beta03'
-    implementation 'androidx.compose.foundation:foundation:1.0.0-beta03'
-    implementation 'androidx.compose.material:material:1.0.0-beta03'
-    implementation 'androidx.compose.material:material-icons-core:1.0.0-beta03'
-    implementation 'androidx.compose.material:material-icons-extended:1.0.0-beta03'
-    implementation 'androidx.compose.runtime:runtime-livedata:1.0.0-beta03'
-    implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0-alpha01"
+    implementation "androidx.compose.ui:ui:$versions.jetpackCompose"
+    implementation "androidx.compose.ui:ui-tooling:$versions.jetpackCompose"
+    implementation "androidx.compose.foundation:foundation:$versions.jetpackCompose"
+    implementation "androidx.compose.material:material:$versions.jetpackCompose"
+    implementation "androidx.compose.material:material-icons-core:$versions.jetpackCompose"
+    implementation "androidx.compose.material:material-icons-extended:$versions.jetpackCompose"
+    implementation "androidx.compose.runtime:runtime-livedata:$versions.jetpackCompose"
+    implementation "com.google.android.material:compose-theme-adapter:$versions.jetpackCompose"
 
-    implementation 'com.puculek.pulltorefresh:pull-to-refresh-compose:1.0.5'
-    implementation "com.google.android.material:compose-theme-adapter:1.0.0-beta03"
+    implementation "androidx.navigation:navigation-compose:$versions.navigationCompose"
+
+    implementation "androidx.hilt:hilt-navigation-compose:$versions.hiltNavigationCompose"
+
+    implementation 'com.puculek.pulltorefresh:pull-to-refresh-compose:1.0.5' //TODO remove when otherwise available
 
     implementation "com.google.android.material:material:$versions.material"
 
@@ -148,9 +163,7 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$versions.androidXFragment"
     implementation "androidx.appcompat:appcompat:$versions.androidXAppCompat"
     implementation "androidx.constraintlayout:constraintlayout:$versions.androidXConstraintLayout"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$versions.androidXLifeCycle"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.androidXSwipeRefreshLayout"
-    implementation 'androidx.navigation:navigation-runtime-ktx:2.3.4'
+    implementation "androidx.navigation:navigation-runtime-ktx:$versions.androidXNavigation"
 
     implementation "com.squareup.retrofit2:retrofit:$versions.retrofit2"
     implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit2"
@@ -175,5 +188,5 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:$versions.coreTesting"
 
     androidTestImplementation "androidx.test.ext:junit:$versions.androidXJunit"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.androidXEspresso"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$versions.jetpackCompose"
 }

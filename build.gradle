@@ -5,10 +5,11 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha12'
+        classpath "com.android.tools.build:gradle:$versions.gradle"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$versions.daggerHiltAndroid"
         classpath "com.squareup.sqldelight:gradle-plugin:$versions.sqldelightVersion"
+        classpath "com.karumi:shot:$versions.shot"
     }
 }
 

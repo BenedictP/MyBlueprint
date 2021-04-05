@@ -31,8 +31,8 @@ fun Launches(
 	scaffoldState: ScaffoldState,
 	viewModel: LaunchesViewModel
 ) {
-	val launchesViewState: State<RefreshableViewState<ArrayList<Launch>, Throwable>> =
-		viewModel.upcomingLaunchesLiveData.observeAsState(RefreshableViewState.None)
+	val launchesViewState: State<RefreshableViewState<ArrayList<Launch>, Throwable>?> =
+		viewModel.upcomingLaunchesLiveData.observeAsState()
 
 	val context = LocalContext.current
 	LaunchesScreen(
@@ -46,8 +46,8 @@ fun Launches(
 }
 
 @Composable
-private fun LaunchesScreen(
-	launchesViewState: State<RefreshableViewState<ArrayList<Launch>, Throwable>>,
+fun LaunchesScreen(
+	launchesViewState: State<RefreshableViewState<ArrayList<Launch>, Throwable>?>,
 	topBarTitle: String,
 	onRefresh: () -> Unit,
 	onInitialLoading: () -> Unit,
@@ -77,23 +77,22 @@ private fun LaunchesScreen(
 
 @Composable
 fun LaunchesScreenBody(
-	launchesViewState: State<RefreshableViewState<ArrayList<Launch>, Throwable>>,
+	launchesViewState: State<RefreshableViewState<ArrayList<Launch>, Throwable>?>,
 	onRefresh: () -> Unit,
 	initialLoad: () -> Unit,
 	onLaunchClicked: (Launch) -> Unit,
 	showErrorRetrySnackbar: (String) -> Unit
 ) {
+	val launchesViewStateValue = launchesViewState.value
 	PullToRefresh(
 		modifier = Modifier.fillMaxHeight(),
-		isRefreshing = launchesViewState.value is RefreshableViewState.Loading,
+		isRefreshing = launchesViewStateValue is RefreshableViewState.Loading,
 		onRefresh = onRefresh
 	) {
-		when (launchesViewState.value) {
-			RefreshableViewState.None -> {
-			}
+		when (launchesViewStateValue) {
 			RefreshableViewState.Init -> initialLoad()
 			is RefreshableViewState.Loading -> {
-				val data = (launchesViewState.value as RefreshableViewState.Loading<ArrayList<Launch>>).data
+				val data = launchesViewStateValue.data
 				if (data != null && data.isNotEmpty()) {
 					ShowData(
 						launches = data,
@@ -103,16 +102,16 @@ fun LaunchesScreenBody(
 			}
 			is RefreshableViewState.Data -> {
 				ShowData(
-					launches = (launchesViewState.value as RefreshableViewState.Data<ArrayList<Launch>>).data,
+					launches = launchesViewStateValue.data,
 					onLaunchClicked = onLaunchClicked
 				)
 			}
 			is RefreshableViewState.Error -> {
 				ShowError(
 					showErrorRetrySnackbar = showErrorRetrySnackbar,
-					launches = (launchesViewState.value as RefreshableViewState.Error<Throwable, ArrayList<Launch>>).data,
+					launches = launchesViewStateValue.data,
 					onLaunchClicked = onLaunchClicked,
-					error = (launchesViewState.value as RefreshableViewState.Error<Throwable, ArrayList<Launch>>).error,
+					error = launchesViewStateValue.error,
 					onRefresh = onRefresh
 				)
 			}
@@ -188,7 +187,7 @@ fun ShowError(
 fun PreviewInitialEmpty() {
 	ThemedPreview() {
 		LaunchesScreen(
-			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
+			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>?> {
 				override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
 					get() = RefreshableViewState.Init
 			},
@@ -206,7 +205,7 @@ fun PreviewInitialEmpty() {
 fun PreviewInitialEmptyDarkMode() {
 	ThemedPreview() {
 		LaunchesScreen(
-			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
+			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>?> {
 				override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
 					get() = RefreshableViewState.Init
 			},
@@ -224,7 +223,7 @@ fun PreviewInitialEmptyDarkMode() {
 fun PreviewLoadingEmpty() {
 	ThemedPreview() {
 		LaunchesScreen(
-			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
+			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>?> {
 				override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
 					get() = RefreshableViewState.Loading()
 			},
@@ -242,7 +241,7 @@ fun PreviewLoadingEmpty() {
 fun PreviewLoadingEmptyDarkMode() {
 	ThemedPreview() {
 		LaunchesScreen(
-			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
+			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>?> {
 				override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
 					get() = RefreshableViewState.Loading()
 			},
@@ -260,7 +259,7 @@ fun PreviewLoadingEmptyDarkMode() {
 fun PreviewData() {
 	ThemedPreview() {
 		LaunchesScreen(
-			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
+			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>?> {
 				override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
 					get() = RefreshableViewState.Data(
 						arrayListOf(
@@ -284,7 +283,7 @@ fun PreviewData() {
 fun PreviewDataDarkMode() {
 	ThemedPreview() {
 		LaunchesScreen(
-			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
+			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>?> {
 				override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
 					get() = RefreshableViewState.Data(
 						arrayListOf(
@@ -308,7 +307,7 @@ fun PreviewDataDarkMode() {
 fun PreviewError() {
 	ThemedPreview() {
 		LaunchesScreen(
-			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
+			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>?> {
 				override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
 					get() = RefreshableViewState.Error(IllegalStateException("Message"))
 			},
@@ -326,7 +325,7 @@ fun PreviewError() {
 fun PreviewErrorDarkMode() {
 	ThemedPreview() {
 		LaunchesScreen(
-			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
+			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>?> {
 				override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
 					get() = RefreshableViewState.Error(IllegalStateException("Message"))
 			},
@@ -344,7 +343,7 @@ fun PreviewErrorDarkMode() {
 fun PreviewLoadingWithData() {
 	ThemedPreview() {
 		LaunchesScreen(
-			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
+			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>?> {
 				override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
 					get() = RefreshableViewState.Loading(
 						arrayListOf(
@@ -368,7 +367,7 @@ fun PreviewLoadingWithData() {
 fun PreviewLoadingWithDataDarkMode() {
 	ThemedPreview() {
 		LaunchesScreen(
-			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
+			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>?> {
 				override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
 					get() = RefreshableViewState.Loading(
 						arrayListOf(
@@ -392,7 +391,7 @@ fun PreviewLoadingWithDataDarkMode() {
 fun PreviewErrorWithData() {
 	ThemedPreview() {
 		LaunchesScreen(
-			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
+			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>?> {
 				override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
 					get() = RefreshableViewState.Error(
 						IllegalStateException("Message"),
@@ -417,7 +416,7 @@ fun PreviewErrorWithData() {
 fun PreviewErrorWithDataDarkMode() {
 	ThemedPreview() {
 		LaunchesScreen(
-			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>> {
+			launchesViewState = object : State<RefreshableViewState<ArrayList<Launch>, Throwable>?> {
 				override val value: RefreshableViewState<ArrayList<Launch>, Throwable>
 					get() = RefreshableViewState.Error(
 						IllegalStateException("Message"),
