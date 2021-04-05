@@ -7,4 +7,4 @@ Every Module for clean architecture is created but not used. I prefer to delete 
 ## Interesting Branches:
 
 - Migrated one Fragment to Jetpack Compose: https://github.com/BenedictP/MyBlueprint/tree/feature/migration-jetpack-compose
-- Migrate whole app to Jetpack Compose: WIP
+- Migrate whole app to Jetpack Compose with UI Screenshot Tests: https://github.com/BenedictP/MyBlueprint/tree/feature/full-jetpack-compose-migration
