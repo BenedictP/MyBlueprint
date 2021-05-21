@@ -9,8 +9,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
-import androidx.navigation.compose.*
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
 import io.benedictp.myblueprint.R
@@ -37,7 +40,7 @@ class MainActivity : ComponentActivity() {
 					bottomBar = {
 						BottomNavigation {
 							val navBackStackEntry by navController.currentBackStackEntryAsState()
-							val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
+							val currentRoute = navBackStackEntry?.destination?.route
 							bottomNavItems.forEach { screen ->
 								BottomNavigationItem(
 									icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
@@ -48,10 +51,14 @@ class MainActivity : ComponentActivity() {
 											// Pop up to the start destination of the graph to
 											// avoid building up a large stack of destinations
 											// on the back stack as users select items
-											popUpTo = navController.graph.startDestination
+											popUpTo(navController.graph.startDestinationRoute!!) {
+												saveState = true
+											}
 											// Avoid multiple copies of the same destination when
 											// reselecting the same item
 											launchSingleTop = true
+											// Restore state when reselecting a previously selected item
+											restoreState = true
 										}
 									}
 								)
@@ -65,7 +72,7 @@ class MainActivity : ComponentActivity() {
 							Launches(
 								navController,
 								scaffoldState,
-								hiltNavGraphViewModel(backStackEntry)
+								hiltViewModel(backStackEntry)
 							)
 						}
 						composable(Screen.Rockets.route) { Rockets() }

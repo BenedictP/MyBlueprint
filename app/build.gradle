@@ -3,7 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id "com.starter.easylauncher" version "3.9.0"
+    id "com.starter.easylauncher" version "3.10.3"
     id 'kotlin-parcelize'
     id 'shot'
 }
@@ -98,7 +98,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.0.0-beta03'
+        kotlinCompilerExtensionVersion '1.0.0-beta07'
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -155,7 +155,7 @@ dependencies {
 
     implementation "androidx.hilt:hilt-navigation-compose:$versions.hiltNavigationCompose"
 
-    implementation 'com.puculek.pulltorefresh:pull-to-refresh-compose:1.0.5' //TODO remove when otherwise available
+    implementation "com.google.accompanist:accompanist-swiperefresh:$versions.accompanisSwiperefresh"
 
     implementation "com.google.android.material:material:$versions.material"
 

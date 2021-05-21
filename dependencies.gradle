@@ -1,54 +1,55 @@
 ext.versions = [
 
-        minSdk                    : 23,
-        compileSdk                : 30,
-        targetSdkVersion          : 30,
-        buildToolsVersion         : "30.0.2",
-        versionCode               : 1,
-        versionName               : "1.0.0",
-        gradle                    : '7.0.0-alpha14',
+        minSdk                  : 23,
+        compileSdk              : 30,
+        targetSdkVersion        : 30,
+        buildToolsVersion       : "30.0.2",
+        versionCode             : 1,
+        versionName             : "1.0.0",
+        gradle                  : '7.0.0-beta02',
 
-        gradleBuildTool           : '4.1.3',
+        gradleBuildTool         : '4.1.3',
 
-        kotlin                    : '1.4.31',
+        kotlin                  : '1.4.32',
 
-        coroutines                : '1.4.2',
+        coroutines              : '1.5.0',
 
-        material                  : '1.3.0',
+        material                : '1.3.0',
 
-        jetpackCompose            : '1.0.0-beta03',
-        navigationCompose         : '1.0.0-alpha09',
-        hiltNavigationCompose     : '1.0.0-alpha01',
+        jetpackCompose          : '1.0.0-beta07',
+        navigationCompose       : '2.4.0-alpha01',
+        hiltNavigationCompose   : '1.0.0-alpha02',
 
-        androidXCore              : '1.3.2',
-        androidXFragment          : '1.3.2',
-        androidXAppCompat         : '1.3.0-rc01',
-        androidXConstraintLayout  : '2.0.4',
-        androidXLifeCycle         : '2.3.1',
-        androidXNavigation        : '2.3.4',
+        androidXCore            : '1.5.0',
+        androidXFragment        : '1.3.4',
+        androidXAppCompat       : '1.3.0',
+        androidXConstraintLayout: '2.0.4',
+        androidXLifeCycle       : '2.3.1',
+        androidXNavigation      : '2.3.5',
 
-        retrofit2                 : '2.9.0',
-        moshi                     : '1.11.0',
-        okhttp3                   : '5.0.0-alpha.2',
+        retrofit2               : '2.9.0',
+        moshi                   : '1.12.0',
+        okhttp3                 : '5.0.0-alpha.2',
 
-        daggerHiltAndroid         : '2.33-beta',
-        androidXHilt              : '1.0.0-alpha03',
-        javaxAnnotiationVersion   : '1.0',
-        javaxInjectVersion        : '1',
+        daggerHiltAndroid       : '2.35.1',
+        javaxAnnotiationVersion : '1.0',
+        javaxInjectVersion      : '1',
 
-        sqldelightVersion         : '1.4.4',
+        sqldelightVersion       : '1.5.0',
 
-        desugarJdkLibs            : '1.1.5',
+        desugarJdkLibs          : '1.1.5',
 
-        glide                     : '4.12.0',
+        glide                   : '4.12.0',
 
-        junit                     : '4.13.2',
-        mockk                     : '1.11.0',
-        coreTesting               : '2.1.0',
+        accompanisSwiperefresh  : '0.10.0',
+
+        junit                   : '4.13.2',
+        mockk                   : '1.11.0',
+        coreTesting             : '2.1.0',
 
 
-        androidXJunit             : '1.1.2',
-        androidXEspresso          : '3.3.0',
-        shot                      : '5.10.3'
+        androidXJunit           : '1.1.2',
+        androidXEspresso        : '3.3.0',
+        shot                    : '5.10.3'
 
 ]

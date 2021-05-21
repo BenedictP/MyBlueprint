@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -17,7 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.puculek.pulltorefresh.PullToRefresh
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.benedictp.domain.model.Launch
 import io.benedictp.myblueprint.R
 import io.benedictp.myblueprint.presentation.composable.MyBlueprintTopAppBar
@@ -84,9 +87,8 @@ fun LaunchesScreenBody(
 	showErrorRetrySnackbar: (String) -> Unit
 ) {
 	val launchesViewStateValue = launchesViewState.value
-	PullToRefresh(
-		modifier = Modifier.fillMaxHeight(),
-		isRefreshing = launchesViewStateValue is RefreshableViewState.Loading,
+	SwipeRefresh(
+		state = rememberSwipeRefreshState(launchesViewStateValue is RefreshableViewState.Loading),
 		onRefresh = onRefresh
 	) {
 		when (launchesViewStateValue) {
@@ -126,18 +128,15 @@ fun ShowData(
 ) {
 	if (launches.isEmpty()) {
 		Column(
-			modifier = Modifier
-				.fillMaxWidth()
+			Modifier
 				.fillMaxHeight()
+				.fillMaxWidth()
+				.verticalScroll(rememberScrollState())
 		) {
 			Text("List is empty")
 		}
 	} else {
-		LazyColumn(
-			modifier = Modifier
-				.fillMaxWidth()
-				.fillMaxHeight()
-		) {
+		LazyColumn {
 			items(launches) { launch ->
 				Column(modifier = Modifier
 					.fillMaxWidth()
@@ -166,7 +165,8 @@ fun ShowError(
 			modifier = Modifier
 				.fillMaxHeight()
 				.fillMaxHeight()
-				.padding(16.dp),
+				.padding(16.dp)
+				.verticalScroll(rememberScrollState()),
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
 			Text("Error: ${error.message}")
