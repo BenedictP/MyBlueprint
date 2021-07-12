@@ -98,7 +98,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.0.0-beta09'
+        kotlinCompilerExtensionVersion '1.0.0-rc01'
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
